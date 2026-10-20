@@ -1,30 +1,26 @@
-# Relatório de modelos e parâmetros
+# Comparação de modelos — Sprint 04 (com histórico Sprint 03)
 
-## Parâmetros comuns
+## Experimento controlado
 
-- temperature: 0,2
-- top_p: 0,9
-- max_tokens / num_predict: 512
-- memória: 1.800 tokens
+Modelos locais: `qwen3:4b-instruct` e `llama3.2:3b`; prompt v2, k=8, limiar 0.60, mesmo conjunto de 10 perguntas. Temperature=0.2, top_p=0.9, max_tokens=512; embeddings `nomic-embed-text`; chunks 800/120; ChromaDB persistente.
 
-## Modelos comparados
+| Modelo | Perguntas técnicas respondidas | Citações explícitas | Faithfulness média* | Answer relevancy média* |
+|---|---:|---:|---:|---:|
+| qwen3:4b-instruct | 4/5 | 0/4 | 0.75 | 1.00 |
+| llama3.2:3b | 4/5 | 1/4 | 0.75 | 1.00 |
 
-### Llama 3 8B - baseline histórica
+*Notas manuais equivalentes, somente entre respostas técnicas produzidas, com justificativas em `evals/avaliacao_manual_comparativa_sprint4.json`; não são RAGAS. Llama errou a expansão de CA; ambos produziram expansão não verificada de RCD. Qwen foi escolhido como modelo principal. A taxa de citação, isoladamente, não mede correção.
 
-Modelo usado nas Sprints 1/2 com temperature 0,3, top_p 0,9 e num_predict 512. O relatório anterior classificou 11/11 respostas como adequadas, mas não guardou latência, tokens nem saída estruturada. A baseline reconstruída no eval atual preserva o prompt e o fluxo manual, usando o mesmo Qwen da Sprint 03 para isolar o efeito da refatoração.
+## Evolução da configuração Qwen
 
-### qwen3:4b-instruct - execução local
+| Iteração | Cobertura | Citações explícitas |
+|---|---:|---:|
+| v2, limiar 0.60 | 4/5 | 0/4 |
+| v3, limiar 0.60 | 4/5 | 4/4 |
+| v3, limiar 0.55 | 5/5 | 5/5 |
 
-Na comparação entre modelos de 15/09/2026, obteve 10/11 casos (90,91%), latência média de 21,17 s, 13,27 tokens médios de entrada e 161,55 de saída. O caso `support_01` falhou por recomendar lavar um conector, orientação proibida pelo eval. Na execução anterior do comparativo de arquitetura, obteve 11/11 na versão LCEL e 7/11 no fluxo legado reconstruído. O structured output acertou 3/3 casos.
+O prompt v3 elevou a rastreabilidade; o limiar 0.55 recuperou uma resposta antes recusada. As médias de faithfulness das respostas geradas não melhoraram no conjunto analisado. Isso é uma limitação explicitada, não um ganho inventado.
 
-### NVIDIA Nemotron 3.5 Lightning 30B A3B - API NVIDIA
+## Histórico (Sprint 03)
 
-Executado em 15/09/2026 com o mesmo prompt v3, os mesmos 11 casos e parâmetros equivalentes. Obteve 11/11 casos (100%), latência média de 12,31 s, 13,27 tokens médios de entrada e 136,45 de saída. Em relação ao Qwen nessa rodada, ganhou 9,09 pontos percentuais de qualidade, reduziu a latência média em 41,88% e produziu respostas 15,54% menores.
-
-### gpt-oss:120b - modelo principal configurado
-
-É o padrão do projeto e será acessado por `ChatOllama`. Seu arquivo local tem aproximadamente 65 GB, acima da capacidade disponível no Mac de 16 GB; por isso não foram inventadas métricas. Para a validação final, configure um `OLLAMA_BASE_URL` remoto ou use um ambiente compatível e reexecute os mesmos comandos.
-
-## Conclusão
-
-O Nemotron apresentou o melhor resultado na comparação medida, com 100% de aprovação e menor latência. O Qwen continua útil para execução local sem custo de API. O Llama 3 documenta a baseline histórica e o gpt-oss:120b permanece como alvo exigido. A troca de modelo não altera prompt, memória, parser, schema ou eval.
+A Sprint 03 possuía comparações próprias de chatbot conversacional e provedores externos; seus resultados **não devem ser comparados diretamente** aos testes RAG desta Sprint 04, pois os conjuntos e critérios diferem. Provedores NVIDIA/OpenRouter continuam opcionais e exigem credenciais; os testes de Sprint 04 documentados foram locais.

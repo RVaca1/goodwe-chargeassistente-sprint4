@@ -1,124 +1,46 @@
-# EV Challenge - GoodWe - Sprint 03
+# GoodWe ChargeAssistente — EV Challenge Sprint 04
 
-Evolução do ChargeAssistente das Sprints 1 e 2 para uma arquitetura conversacional
-com LangChain LCEL, memória por sessão, structured output Pydantic v2, context
-engineering e guardrails.
+**Turma:** CCPH — Ciência da Computação, 2º semestre.  
+**Equipe:** Victor Manzini (RM 572123), Guilherme de Oliveira Santos (RM 572195), Caio Marinho Pereira (RM 572873), Ricardo Tunes (RM 555919), Luiz Cesar Conti Salvador (RM 571305).
 
-## Demonstração pública
-
-- Aplicação: <https://goodwe-chargeassistente-sprint3-3nerteh7va8qna8g8gr9rz.streamlit.app/>
-- Relatório: [`docs/relatorio_evolucao.pdf`](docs/relatorio_evolucao.pdf)
-- Integrantes: [`integrantes.txt`](integrantes.txt)
-
-## Funcionalidades da Sprint 03
-
-- Chain LCEL: `ChatPromptTemplate | ChatOllama/ChatOpenAI | parser`.
-- Memória por sessão com `RunnableWithMessageHistory` e
-  `ConversationTokenBufferMemory`, limitada a 1.800 tokens.
-- Structured output com o schema `ConsultaRecarga` e `field_validator`.
-- System prompts versionados com XML tagging e contagem de tokens via `tiktoken`.
-- Guardrails para escopo GoodWe, prompt injection, risco elétrico e orientação
-  jurídica ou financeira.
-- Eval reproduzível do fluxo legado e da Sprint 03.
-- Provedores configuráveis: Ollama, NVIDIA API e OpenRouter.
+A Sprint 04 amplia o chatbot da Sprint 03 com **RAG documental**: manuais GoodWe → extração PDF → chunks → embeddings Ollama → ChromaDB persistente → recuperação filtrada → geração com fontes → Streamlit.
 
 ## Executar localmente
 
-Requisitos: Python 3.12 ou superior e Ollama instalado.
+Requer Python, Ollama em execução e os manuais PDF em `data/knowledge_base/` (quando não distribuídos, obtenha os documentos oficiais antes de indexar).
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
+ollama pull nomic-embed-text
 ollama pull qwen3:4b-instruct
-cp .env.example .env
+ollama pull llama3.2:3b  # comparação, opcional para uso normal
+python -m scripts.index_knowledge
+PYTHONPATH=. python -m streamlit run app/streamlit_app.py
 ```
 
-No arquivo `.env`, mantenha:
+**Configuração testada:** `OLLAMA_MODEL=qwen3:4b-instruct`, `LLM_PROVIDER=ollama`, prompt `v3`, `RAG_TOP_K=8`, `RAG_MIN_RELEVANCE=0.55`, embedding `nomic-embed-text`; Ollama local na porta 11434. Variáveis de ambiente ou `.env` podem substituir os padrões. A interface legada da Sprint 03 permanece em `streamlit_app.py` (raiz); **use `app/streamlit_app.py` para o RAG**.
 
-```dotenv
-LLM_PROVIDER=ollama
-OLLAMA_MODEL=qwen3:4b-instruct
-OLLAMA_BASE_URL=http://localhost:11434
-MEMORY_TOKEN_LIMIT=1800
-```
+## Reproduzir avaliações
 
-As chaves de API não são necessárias para a execução local com Ollama.
+Os resultados **já registrados** estão em `evals/qwen_v2_10.json`, `evals/qwen_v3_10.json`, `evals/llama_v2_10.json` e `evals/qwen_v3_threshold055.json`. Todos usam `evals/sprint4_eval_set.json` (10 perguntas). Para executar novos testes, consulte `python -m evals.run_sprint4 --help`; informe `--k 8` e o prompt/modelo pretendido. O limite de relevância é configurado no pipeline (ou em parâmetro específico se suportado pelo script); anote-o ao comparar execuções.
 
-### Interface Streamlit
+| Configuração | Cobertura técnica | Citações explícitas |
+|---|---:|---:|
+| Qwen v2 / 0.60 | 4/5 | 0/4 |
+| Qwen v3 / 0.60 | 4/5 | 4/4 |
+| Llama v2 / 0.60 | 4/5 | 2/4 |
+| Qwen v3 / 0.55 | 5/5 | 5/5 |
 
-```bash
-streamlit run streamlit_app.py
-```
+**Importante:** citações explícitas ≠ fidelidade verificada. As notas manuais comparativas estão em `evals/avaliacao_manual_comparativa_sprint4.json` e foram aplicadas somente às respostas técnicas produzidas; recusas são contabilizadas à parte. Não são scores calculados pela biblioteca RAGAS. O conjunto é pequeno e não representa desempenho geral.
 
-### Interface de terminal
+## Relatórios
 
-```bash
-python app.py --session demonstracao
-```
+- [`docs/relatorio_rag.md`](docs/relatorio_rag.md): pipeline, resultados, rubrica e segurança.
+- [`docs/relatorio_modelos.md`](docs/relatorio_modelos.md): comparação entre modelos da Sprint 04 e histórico da Sprint 03.
+- [`docs/relatorio_evolucao_sprint4.md`](docs/relatorio_evolucao_sprint4.md): evolução e limitações.
+- [`relatorio_evolucao_sprint04_goodwe.pdf`](relatorio_evolucao_sprint04_goodwe.pdf): PDF de evolução (verificar conteúdo e limite de 5 páginas antes da entrega).
+- [`integrantes.txt`](integrantes.txt): equipe e RMs.
 
-Use a mesma sessão por pelo menos três turnos para demonstrar a memória.
+## Segurança e limitações
 
-## Modelo exigido e ambiente de desenvolvimento
-
-O núcleo usa `ChatOllama` e aceita `gpt-oss:120b`, conforme o enunciado. Esse
-modelo não cabe na máquina de desenvolvimento de 16 GB. Por isso, os testes locais
-reproduzíveis foram executados com `qwen3:4b-instruct`. Para testar o modelo de 120B,
-configure `OLLAMA_MODEL=gpt-oss:120b` e aponte `OLLAMA_BASE_URL` para um servidor
-Ollama compatível.
-
-## Avaliações
-
-Execute os mesmos casos com o modelo usado nas métricas do relatório:
-
-```bash
-python -m evals.run_evals --variant legacy --provider ollama --model qwen3:4b-instruct
-python -m evals.run_evals --variant sprint3 --provider ollama --model qwen3:4b-instruct
-python -m evals.run_evals --provider ollama --model qwen3:4b-instruct --output qwen_results.json
-python -m evals.run_evals --provider nvidia --model nvidia/nemotron-3.5-lightning-30b-a3b --output nemotron_results.json
-python -m evals.run_structured_evals --model qwen3:4b-instruct
-```
-
-Evidências versionadas:
-
-- `evals/legacy_results.json`: 7/11 casos aprovados (63,64%).
-- `evals/sprint3_results.json`: 11/11 casos aprovados (100%).
-- `evals/structured_results.json`: 3/3 extrações válidas (100%).
-- `evals/qwen_results.json`: Qwen aprovado em 10/11 casos (90,91%).
-- `evals/nemotron_results.json`: Nemotron aprovado em 11/11 casos (100%).
-
-## Publicação no Streamlit Community Cloud
-
-A demonstração pública usa OpenRouter com um modelo Nemotron conversacional. Em
-**Advanced settings > Secrets**, configure:
-
-```toml
-LLM_PROVIDER = "openrouter"
-OPENROUTER_API_KEY = "sua-chave-openrouter"
-OPENROUTER_MODEL = "nvidia/nemotron-3.5-lightning:free"
-```
-
-Também é possível usar diretamente a NVIDIA API:
-
-```toml
-LLM_PROVIDER = "nvidia"
-NVIDIA_API_KEY = "sua-chave-nvapi"
-NVIDIA_MODEL = "nvidia/nemotron-3.5-lightning-30b-a3b"
-```
-
-Nunca salve chaves reais no GitHub. O projeto carrega as credenciais apenas por
-variáveis de ambiente, `.env` ignorado pelo Git ou Secrets da hospedagem.
-
-## Estrutura principal
-
-```text
-prompts/       versões do system prompt
-src/chain/     construção LCEL e memória
-src/schemas/   schema Pydantic v2
-src/guardrails validação de segurança e escopo
-evals/         casos, executores e resultados
-docs/          baseline, relatório de modelos e PDF final
-```
-
-O código das Sprints 1 e 2 usado como baseline está documentado em
-[`docs/baseline_sprints_1_2.md`](docs/baseline_sprints_1_2.md).
+Perguntas com tentativa explícita de injection foram bloqueadas (2/2); um trecho malicioso simulado foi descartado em teste isolado com `unittest.mock`. Isso **não prova segurança universal**. O filtro de relevância 0.55 foi escolhido em um conjunto reduzido. O ChromaDB e PDFs podem ser omitidos da publicação por tamanho/licença; nesse caso a indexação deve ser refeita localmente. **Não publique `.env`, chaves ou dados privados.**

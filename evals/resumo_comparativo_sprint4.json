@@ -1,23 +1,54 @@
 {
-  "qwen_v2": {
+  "qwen_v2_060": {
+    "model": "qwen3:4b-instruct",
+    "prompt": "v2",
     "technical_questions": 5,
     "answered": 4,
     "coverage": 0.8,
     "explicit_citations": 0,
-    "citation_rate": 0.0
+    "citation_rate": 0.0,
+    "scored_answers": 4,
+    "faithfulness_mean_answered": 0.75,
+    "answer_relevancy_mean_answered": 1,
+    "note": "Rubrica manual equivalente; pontuações baseadas nas respostas registradas e evidências do manual. Não é RAGAS automatizado."
   },
-  "qwen_v3": {
+  "qwen_v3_060": {
+    "model": "qwen3:4b-instruct",
+    "prompt": "v3",
     "technical_questions": 5,
     "answered": 4,
     "coverage": 0.8,
     "explicit_citations": 4,
-    "citation_rate": 1.0
+    "citation_rate": 1.0,
+    "scored_answers": 4,
+    "faithfulness_mean_answered": 0.75,
+    "answer_relevancy_mean_answered": 1,
+    "note": "Rubrica manual equivalente; pontuações baseadas nas respostas registradas e evidências do manual. Não é RAGAS automatizado."
+  },
+  "llama_v2_060": {
+    "model": "llama3.2:3b",
+    "prompt": "v2",
+    "technical_questions": 5,
+    "answered": 4,
+    "coverage": 0.8,
+    "explicit_citations": 1,
+    "citation_rate": 0.25,
+    "scored_answers": 4,
+    "faithfulness_mean_answered": 0.75,
+    "answer_relevancy_mean_answered": 1,
+    "note": "Rubrica manual equivalente; pontuações baseadas nas respostas registradas e evidências do manual. Não é RAGAS automatizado."
   },
   "qwen_v3_055": {
+    "model": "qwen3:4b-instruct",
+    "prompt": "v3",
     "technical_questions": 5,
     "answered": 5,
     "coverage": 1.0,
     "explicit_citations": 5,
-    "citation_rate": 1.0
+    "citation_rate": 1.0,
+    "scored_answers": 5,
+    "faithfulness_mean_answered": 0.8,
+    "answer_relevancy_mean_answered": 1,
+    "note": "Rubrica manual equivalente; pontuações baseadas nas respostas registradas e evidências do manual. Não é RAGAS automatizado."
   }
 }
