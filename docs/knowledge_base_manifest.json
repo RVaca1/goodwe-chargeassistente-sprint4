@@ -1,0 +1,44 @@
+[
+  {
+    "file": "data/knowledge_base/goodwe_manuals/GW_HCA Series_User Manual-PT.pdf",
+    "size_bytes": 5059234,
+    "sha256": "fe118ff80a7926cfa62ed59aa26718691ff8c7d7d23dd845a2fcd3b6b4afcb11",
+    "type": "goodwe_manuals"
+  },
+  {
+    "file": "data/knowledge_base/goodwe_manuals/GW_HCA Series_User Manual-EN.pdf",
+    "size_bytes": 5752608,
+    "sha256": "ceae92011823fadb5b4703a0f00f839881d47f1db573d474b4c1c81b866cffa1",
+    "type": "goodwe_manuals"
+  },
+  {
+    "file": "data/knowledge_base/goodwe_manuals/GW_HCA Series_Manual de usuario-ES.pdf",
+    "size_bytes": 5288323,
+    "sha256": "88de02cf208c3fd263eecd23fda65a4862e51a48b52a4c1339174ce502f65719",
+    "type": "goodwe_manuals"
+  },
+  {
+    "file": "data/knowledge_base/goodwe_manuals/GW_HCA G2_User Manual-EN.pdf",
+    "size_bytes": 14567365,
+    "sha256": "6a8d11d5afde6aa1840c6c8591a5c4dc379efc1c0953ef144a90d65f5a36e6a9",
+    "type": "goodwe_manuals"
+  },
+  {
+    "file": "data/knowledge_base/goodwe_manuals/GW_HCA Series_Quick Installation Guide-POLY.pdf",
+    "size_bytes": 6122980,
+    "sha256": "ea1641c5e73b82898cf007ff4bcc09458b12362097f706a8a9b9ee71d80121c7",
+    "type": "goodwe_manuals"
+  },
+  {
+    "file": "data/knowledge_base/goodwe_manuals/GW_HCA G2_Quick Installation Guide-POLY.pdf",
+    "size_bytes": 13461129,
+    "sha256": "006545bad6bcb77b412f9d6103ad0171ee9f728610a716f5312619f9161e7031",
+    "type": "goodwe_manuals"
+  },
+  {
+    "file": "data/knowledge_base/regulations/anexo-resolucao-normativa-1000-2021-aneel-12-Retificado_no_D.O.U_de_01.04.2025.pdf",
+    "size_bytes": 200182,
+    "sha256": "63511cba0033b60ddbee4a47ac192bdd0ed48a42ff099864ca7eb211c3d36d49",
+    "type": "regulations"
+  }
+]

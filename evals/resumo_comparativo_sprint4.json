@@ -1,0 +1,23 @@
+{
+  "qwen_v2": {
+    "technical_questions": 5,
+    "answered": 4,
+    "coverage": 0.8,
+    "explicit_citations": 0,
+    "citation_rate": 0.0
+  },
+  "qwen_v3": {
+    "technical_questions": 5,
+    "answered": 4,
+    "coverage": 0.8,
+    "explicit_citations": 4,
+    "citation_rate": 1.0
+  },
+  "qwen_v3_055": {
+    "technical_questions": 5,
+    "answered": 5,
+    "coverage": 1.0,
+    "explicit_citations": 5,
+    "citation_rate": 1.0
+  }
+}

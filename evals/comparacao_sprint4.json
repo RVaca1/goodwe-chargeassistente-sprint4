@@ -1,0 +1,29 @@
+{
+  "qwen_v2": {
+    "model": "qwen_v2",
+    "factual_answer": "A potência nominal do carregador documentado é:\n\n- 7.000 W (7 kW) para o modelo GW7K-HCA;\n- 11.000 W (11 kW) para o modelo GW11K-HCA;\n- 22.000 W (22 kW) para o modelo GW22K-HCA.\n\nEssa informação está contida no Trecho 1 do contexto fornecido.",
+    "retrieved_sources": 5,
+    "explicit_citation": false,
+    "faithfulness": null,
+    "answer_relevancy": 1.0,
+    "manual_review": "As três potências estão confirmadas no manual, página 10. A correspondência entre códigos de modelo e potência ainda requer verificação. Sem citação explícita."
+  },
+  "qwen_v3": {
+    "model": "qwen_v3",
+    "factual_answer": "A potência nominal do carregador documentado é:\n\n- 7.000 W (7 kW) para o modelo GW7K-HCA  \n- 11.000 W (11 kW) para o modelo GW11K-HCA  \n- 22.000 W (22 kW) para o modelo GW22K-HCA  \n\nFonte: GW_HCA Series_User Manual-PT.pdf, página 10.",
+    "retrieved_sources": 5,
+    "explicit_citation": true,
+    "faithfulness": 1.0,
+    "answer_relevancy": 1.0,
+    "manual_review": "As potências 7, 11 e 22 kW estão sustentadas pelo manual GW_HCA Series_User Manual-PT.pdf, página 10. A resposta apresenta citação explícita. Correspondência dos códigos de modelo sujeita a verificação complementar."
+  },
+  "llama_v2": {
+    "model": "llama_v2",
+    "factual_answer": "A potência nominal do carregador documentado é de 7 kW, 11 kW e 22 kW, dependendo do modelo.",
+    "retrieved_sources": 5,
+    "explicit_citation": false,
+    "faithfulness": 1.0,
+    "answer_relevancy": 1.0,
+    "manual_review": "As potências de 7, 11 e 22 kW estão sustentadas pelo manual GW_HCA Series_User Manual-PT.pdf, página 10. A resposta não contém citação explícita."
+  }
+}
